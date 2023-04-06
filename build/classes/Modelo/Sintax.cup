@@ -1,0 +1,50 @@
+package Modelo;
+import java_cup.runtime.Symbol;
+
+parser code
+{:
+    private Symbol sim;
+    public void syntax_error(Symbol sim){
+        this.sim=sim;
+    }
+    public Symbol getSim(){
+        return this.sim;
+    }
+:};
+
+terminal Insert,Into,Select,From,Update,Delete,Show,Create,Use,Punto,And,Or,Values,Where,
+    Linea,Igual,Suma,Resta,Multiplicacion,Division,Parentesis_a,Parentesis_c,
+    Llave_a,Llave_c,P_coma,Identificador,Numero,ERROR,ComSimp,
+    Mayor,Menor,MenI,MayI,Distinto,Set;
+
+non terminal INSTRUCCION,OPER1,OPER2,OPER3;
+
+start with INSTRUCCION;
+
+OPER1 ::= Mayor | Menor | MenI | MayI | Distinto;
+OPER2 ::= And | Or;
+OPER3 ::= Suma | Resta | Multiplicacion | Division;
+
+INSTRUCCION ::= 
+    Insert Into Identificador Parentesis_a Identificador Parentesis_c Values Parentesis_a ComSimp Identificador ComSimp Parentesis_c P_coma |
+    Insert Into Identificador Parentesis_a Identificador Parentesis_c Values Parentesis_a ComSimp Numero ComSimp Parentesis_c P_coma |
+    Insert Into Identificador Values Parentesis_a ComSimp Identificador ComSimp Parentesis_c P_coma |
+    Insert Into Identificador Values Parentesis_a ComSimp Numero ComSimp Parentesis_c P_coma |
+    Select Multiplicacion From Identificador P_coma |
+    Select Multiplicacion From Identificador Where Identificador Igual Numero P_coma |
+    Select Multiplicacion From Identificador Where Identificador Igual ComSimp Identificador ComSimp P_coma |
+    Select Multiplicacion From Identificador Where Identificador Igual Numero OPER2 Identificador Igual Numero P_coma |
+    Select Identificador From Identificador P_coma |
+    Delete From Identificador Where Identificador Igual Numero P_coma |
+    Delete From Identificador Where Identificador Igual ComSimp Identificador ComSimp P_coma |
+    Delete From Identificador Where Identificador Igual ComSimp Numero ComSimp P_coma |
+    Delete From Identificador Where Identificador Igual ComSimp Identificador ComSimp OPER2 Identificador Igual ComSimp Identificador ComSimp P_coma |
+    Delete From Identificador Where Identificador OPER1 Numero P_coma |
+    Delete From Identificador Where Identificador Igual Numero OPER3 Identificador P_coma |
+    Update Identificador Set Identificador Igual Numero P_coma |
+    Update Identificador Set Identificador Igual Numero Where Identificador Igual Numero OPER2 Identificador OPER3 Numero P_coma |
+    Update Identificador Set Identificador Igual ComSimp Identificador ComSimp P_coma |
+    Update Identificador Set Identificador Igual ComSimp Numero ComSimp P_coma |
+    Show Identificador P_coma | 
+    Use Identificador P_coma
+;
